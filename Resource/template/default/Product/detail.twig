@@ -24,3 +24,14 @@
     });
 </script>
 {% endif %}
+
+{% if Product.Shop is not empty %}
+<script>
+    $(function () {
+        $('.ec-productRole__title').after($('#shopping-mall__maker-name'));
+    })
+</script>
+<div id="shopping-mall__maker-name">
+    {{ Product.Shop.name }}
+</div>
+{% endif %}
