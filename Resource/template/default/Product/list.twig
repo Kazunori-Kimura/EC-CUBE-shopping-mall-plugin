@@ -31,3 +31,15 @@
         </script>
     {% endif %}
 {% endfor %}
+
+{# ショップのリストを追加する #}
+<script>
+    $(function() {
+        $('.ec-searchnavRole__topicpath').before($('.ec-searchnav__shop'));
+    });
+</script>
+<ul class="ec-searchnav__shop">
+{% for Shop in Shops %}
+    <li><a href="{{ url('product_list') }}?shop_id={{ Shop.id }}">{{ Shop.name }}</a></li>
+{% endfor %}
+</ul>
