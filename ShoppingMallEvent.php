@@ -10,6 +10,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Event\TemplateEvent;
 use Eccube\Request\Context;
 use Plugin\ShoppingMall\Doctrine\Filter\OwnShopFilter;
+use Plugin\ShoppingMall\Repository\ShopRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -35,17 +36,24 @@ class ShoppingMallEvent implements EventSubscriberInterface
     private $router;
 
     /**
+     * @var ShopRepository
+     */
+    protected $shopRepository;
+
+    /**
      * ShoppingMallEvent constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param Context $requestContext
      * @param RouterInterface $router
+     * @param ShopRepository $shopRepository
      */
-    public function __construct(EntityManagerInterface $entityManager, Context $requestContext, RouterInterface $router)
+    public function __construct(EntityManagerInterface $entityManager, Context $requestContext, RouterInterface $router, ShopRepository $shopRepository)
     {
         $this->entityManager = $entityManager;
         $this->requestContext = $requestContext;
         $this->router = $router;
+        $this->shopRepository = $shopRepository;
     }
 
     /**
@@ -168,6 +176,17 @@ class ShoppingMallEvent implements EventSubscriberInterface
     public function onTemplateProductList(TemplateEvent $templateEvent)
     {
         $templateEvent->addSnippet('@ShoppingMall/default/Product/list.twig');
+
+        // ショップ情報を渡す
+        $Shops = $this->shopRepository
+            ->findBy(
+                [],
+                ['sort_no' => 'DESC']
+            );
+
+        $parameters = $templateEvent->getParameters();
+        $parameters['Shops'] = $Shops;
+        $templateEvent->setParameters($parameters);
     }
 
     /**
