@@ -33,9 +33,29 @@
 {% endfor %}
 
 {# ショップのリストを追加する #}
+<style>
+.ec-searchnav__shop {
+    list-style: none;
+    display: flex;
+}
+.ec-searchnav__shop li {
+    display: block;
+    margin-right: 1rem;
+    padding: 0.5rem;
+}
+.ec-searchnav__shop--active {
+    background-color: #00a5e0;
+    border-radius: 6px;
+}
+.ec-searchnav__shop--active a {
+    color: white;
+}
+</style>
 <script>
     $(function() {
         $('.ec-searchnavRole__topicpath').before($('.ec-searchnav__shop'));
+        // 選択済みの要素を active にする
+        $(`.ec-searchnav__shop a[href="${location.href}"]`).closest('li').addClass('ec-searchnav__shop--active');
     });
 </script>
 <ul class="ec-searchnav__shop">

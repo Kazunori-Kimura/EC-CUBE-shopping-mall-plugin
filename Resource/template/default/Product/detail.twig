@@ -32,6 +32,6 @@
     });
 </script>
 <div id="shopping-mall__maker-name">
-    {{ Product.Shop.name }}
+    メーカー: <a href="{{ url('product_list') }}?shop_id={{ Product.Shop.id }}">{{ Product.Shop.name }}</a>
 </div>
 {% endif %}
